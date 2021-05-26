@@ -7,9 +7,13 @@
         font-weight: bold;
     }
     td.compare { font-size: large;}
+    thead td { text-align: center; }
 </style>
 <table>
     <thead>
+        <tr>
+            <td colspan="4">系统运行状态</td>
+        </tr>
         <tr>
             <td>负载</td>
             <td>CPU</td>
@@ -28,6 +32,9 @@
 </table>
 <table>
     <thead>
+        <tr>
+            <td colspan="4">WAN 口信息</td>
+        </tr>
         <tr>
             <td>接口IP</td>
             <td></td>
@@ -50,6 +57,9 @@
 </table>
 <table>
     <thead>
+        <tr>
+            <td colspan="4">在线设备 {{online_devs | length}} 台</td>
+        </tr>
         <tr>
             <td>名称</td>
             <td>IP</td>

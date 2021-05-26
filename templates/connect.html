@@ -7,9 +7,13 @@
         font-weight: bold;
     }
     td.compare { font-size: large;}
+    thead td { text-align: center; }
 </style>
 <table>
     <thead>
+        <tr>
+            <td colspan="3">连接到路由器</td>
+        </tr>
         <tr>
             <td>名称</td>
             <td>IP (MAC)</td>
@@ -32,6 +36,9 @@
 </table>
 <table>
     <thead>
+        <tr>
+            <td colspan="3">在线设备 {{online_devs | length}} 台</td>
+        </tr>
         <tr>
             <td>名称</td>
             <td>IP</td>

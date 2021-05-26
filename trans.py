@@ -10,10 +10,13 @@ SECTION_SP = '####'
 DEVICE_SP = '---'
 
 
-REG_TITLE_ROUTER_STAT = re.compile(r'【.+】路由状态')
-REG_TITLE_CONNECT = re.compile(r'【.+】.+\s+连接了你的路由器')
-REG_TITLE_DISCONNECT = re.compile(r'【.+】.+\s+断开连接')
-REG_TITLE_ABNORMAL = re.compile(r'【.+】.+\s+流量异常')
+REG_TITLE = {
+    'stat': re.compile(r'【.+】路由状态'),
+    'connect': re.compile(r'【.+】.+\s+连接了你的路由器'),
+    'disconnect': re.compile(r'【.+】.+\s+断开连接'),
+    'abnormal': re.compile(r'【.+】.+\s+流量异常'),
+    'cos': re.compile(r'【.+】设备状态变化')    # Change-of-State
+}
 
 REG_STAT = {
     'load': re.compile(r'平均负载：(.+)'),
@@ -176,33 +179,51 @@ def trans_abnormal(content):
     return data
 
 
+def trans_cos(content):
+    sections = content.split(SECTION_SP)
+    #print(sections)
+    data = {
+        'new_clients': [],
+        'old_clients': []
+    }
+    for item in sections:
+        if '新设备连接' in item:
+            data['new_clients'].append(_parse_items(REG_NEW_CLIENT, item))
+        elif '设备断开连接' in item:
+            data['old_clients'].append(_parse_items(REG_OLD_CLIENT, item))
+        elif '现有在线设备' in item:
+            online_devs = []
+            for online_dev_item in REG_ONLINE_DEV_CONNECT.findall(item):
+                ip, total, name = online_dev_item
+                online_devs.append(dict(
+                    name = name.strip('\r'),
+                    ip = ip.strip('\r'),
+                    total = total.strip('\r')
+                ))
+            data['online_devs'] = online_devs
+    return data
+
+
 def transition(body_data): 
     title = body_data['title'][0]
     content = body_data['content'][0]
     #print(body_data)
-    if REG_TITLE_ROUTER_STAT.match(title):
-        key = 'stat'
-    elif REG_TITLE_CONNECT.match(title):
-        key = 'connect'
-    elif REG_TITLE_DISCONNECT.match(title):
-        key = 'disconnect'
-    elif REG_TITLE_ABNORMAL.match(title):
-        key = 'abnormal'
+    
+    for key in REG_TITLE:
+        if REG_TITLE[key].match(title):
+            data = globals()[f'trans_{key}'](content)
+            #print(data)
+            
+            template = env.get_template(f'{key}.html')
+            html = template.render(**data)
+            html = transform(html)
+            #print(html)
+            send(title, html)
+            return title
     else:
         su.info(content)
         raise RuntimeError(f'未知的svrchan消息：{title}')
     
-    data = globals()[f'trans_{key}'](content)
-    #print(data)
-    
-    template = env.get_template(f'{key}.html')
-    html = template.render(**data)
-    html = transform(html)
-    print(html)
-    send(title, html)
-    
-    return title
-
 
 def send(title:str, body:str, html:bool=True):
     #su.ding(title, body)

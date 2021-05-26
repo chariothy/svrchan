@@ -12,6 +12,32 @@
 <table>
     <thead>
         <tr>
+            <td colspan="3">连接到路由器</td>
+        </tr>
+        <tr>
+            <td>名称</td>
+            <td>IP (MAC)</td>
+            <td>接口</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for dev in new_clients %}
+        <tr class="{% if dev.name == 'unknown' %}
+        unknown
+    {% else %}
+        known
+    {% endif %}">
+            <td>{{ dev.name }}</td>
+            <td>{{ dev.ip }} <br> {{ dev.mac }}</td>
+            <td>{{ dev.if }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<table>
+    <thead>
+        <tr>
             <td colspan="4">断开连接</td>
         </tr>
         <tr>

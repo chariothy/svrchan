@@ -1,0 +1,29 @@
+<style>
+    table { border-collapse: collapse; margin: 3px}
+    tr.unknown { background-color: #ffc3b3;}
+    td { border: 1px solid #999; padding: 5px;}
+    table thead {
+        background-color: #CCE8EB;
+        font-weight: bold;
+    }
+    thead td { text-align: center; }
+    td.compare { font-size: large;}
+</style>
+<table>
+    <thead>
+    <tr><td colspan="4">新连接设备</td></tr>
+        <tr>
+            <td>名称</td>
+            <td>IP (MAC)</td>
+            <td>流量</td>
+            <td>在线</td>
+        </tr>
+    </thead>
+    <tbody><tr>
+            <td>{{ dev.name }}</td>
+            <td>{{ dev.ip }} <br> {{ dev.mac }}</td>
+            <td>{{ dev.total }}</td>
+            <td>{{ dev.period }}</td>
+        </tr>
+    </tbody>
+</table>
