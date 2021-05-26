@@ -1,0 +1,74 @@
+<style>
+    table { border-collapse: collapse; margin: 3px}
+    tr.unknown { background-color: #ffc3b3;}
+    td { border: 1px solid #999; padding: 5px;}
+    table thead {
+        background-color: #CCE8EB;
+        font-weight: bold;
+    }
+    td.compare { font-size: large;}
+</style>
+<table>
+    <thead>
+        <tr>
+            <td>负载</td>
+            <td>CPU</td>
+            <td>内存</td>
+            <td>运行</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ load }}</td>
+            <td>{{ cpu }}</td>
+            <td>{{ mem }}</td>
+            <td>{{ period }}</td>
+        </tr>
+    </tbody>
+</table>
+<table>
+    <thead>
+        <tr>
+            <td>接口IP</td>
+            <td></td>
+            <td>外网IP</td>
+            <td>在线</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ if_ip }}</td>
+            <td class="compare">{% if if_ip == net_ip %}
+                =
+            {% else %}
+                ≠
+            {% endif %}</td>
+            <td>{{ net_ip }}</td>
+            <td>{{ online }}</td>
+        </tr>
+    </tbody>
+</table>
+<table>
+    <thead>
+        <tr>
+            <td>名称</td>
+            <td>IP</td>
+            <td>流量</td>
+            <td>在线</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for dev in online_devs %}
+        <tr class="{% if dev.name == 'unknown' %}
+        unknown
+    {% else %}
+        known
+    {% endif %}">
+            <td>{{ dev.name }}</td>
+            <td>{{ dev.ip }}</td>
+            <td>{{ dev.total }}</td>
+            <td>{{ dev.period }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

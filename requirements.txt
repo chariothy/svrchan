@@ -1,0 +1,4 @@
+pybeans
+requests
+jinja2
+premailer

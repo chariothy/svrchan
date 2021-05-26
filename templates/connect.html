@@ -1,0 +1,54 @@
+<style>
+    table { border-collapse: collapse; margin: 3px}
+    tr.unknown { background-color: #ffc3b3;}
+    td { border: 1px solid #999; padding: 5px;}
+    table thead {
+        background-color: #CCE8EB;
+        font-weight: bold;
+    }
+    td.compare { font-size: large;}
+</style>
+<table>
+    <thead>
+        <tr>
+            <td>名称</td>
+            <td>IP (MAC)</td>
+            <td>接口</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for dev in new_clients %}
+        <tr class="{% if dev.name == 'unknown' %}
+        unknown
+    {% else %}
+        known
+    {% endif %}">
+            <td>{{ dev.name }}</td>
+            <td>{{ dev.ip }} <br> {{ dev.mac }}</td>
+            <td>{{ dev.if }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<table>
+    <thead>
+        <tr>
+            <td>名称</td>
+            <td>IP</td>
+            <td>流量</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for dev in online_devs %}
+        <tr class="{% if dev.name == 'unknown' %}
+        unknown
+    {% else %}
+        known
+    {% endif %}">
+            <td>{{ dev.name }}</td>
+            <td>{{ dev.ip }}</td>
+            <td>{{ dev.total }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
