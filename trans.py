@@ -204,11 +204,7 @@ def trans_cos(content):
     return data
 
 
-def transition(body_data): 
-    title = body_data['title'][0]
-    content = body_data['content'][0]
-    #print(body_data)
-    
+def transition(title, content): 
     for key in REG_TITLE:
         if REG_TITLE[key].match(title):
             data = globals()[f'trans_{key}'](content)
@@ -219,7 +215,6 @@ def transition(body_data):
             html = transform(html)
             #print(html)
             send(title, html)
-            return title
     else:
         su.info(content)
         raise RuntimeError(f'未知的svrchan消息：{title}')

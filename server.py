@@ -1,7 +1,7 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import json
 import os
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import parse_qs, urlsplit
 
 
 from trans import transition
@@ -33,25 +33,34 @@ class EchoHTTPHandler(BaseHTTPRequestHandler):
         
   def do_POST(self):
       r"""  post json """
+      print('%s - %s - %s' % (self.client_address, self.request_version, self.path))
       # POST 有 Content-Length，GET 无 Content-Length
       content_len = int(self.headers['Content-Length'])   
       post_body = self.rfile.read(content_len)
 
-      parsed_path = urlparse(self.path)
-      self.send_response(200)
-      self.end_headers()
-      
-      parsed_body = post_body.decode('utf-8')
-      #print(parsed_body, self.headers, '' )
-      
-      if ENV == 'debug' or ENV == 'dev':
-          parsed_body = case_dict[self.path.strip('/')]
-          
-      data = parse_qs(parsed_body)
-      
-      title = '出错'
       try:
-          title = transition(data)
+        parsed_path = urlsplit(self.path)
+        self.send_response(200)
+        self.end_headers()
+
+        # 目前仅支持pushplus，其它的因为使用https，容易产生400错误
+        # 在微信推送界面上，需要将pushplus与微信推送的token都填上
+        # 因为源码中：
+        # [ ! -z "$pushplus_token" ] && [ -z "$sckey" ] && str_tab=""
+        # 这样会导致tab被去掉而影响正则解析
+        params = dict(parse_qs(parsed_path.query))
+        #print(params)
+        
+        parsed_body = post_body.decode('utf-8')
+        #print(parsed_body, self.headers, '' )
+        
+        if ENV == 'debug' or ENV == 'dev':
+            parsed_body = case_dict[self.path.strip('/')]
+            
+        data = parse_qs(parsed_body)
+        title = data['title'][0]
+        content = data['content'][0]
+        transition(title, content)
       except Exception as ex:
           su.ex(f'转换ServerChan消息出错：{ex}')
           su.info('Failed to parse body: \n\n' + parsed_body)
