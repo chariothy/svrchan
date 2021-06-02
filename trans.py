@@ -215,6 +215,7 @@ def transition(title, content):
             html = transform(html)
             #print(html)
             send(title, html)
+            return
     else:
         su.info(content)
         raise RuntimeError(f'未知的svrchan消息：{title}')
