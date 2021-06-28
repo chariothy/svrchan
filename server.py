@@ -58,6 +58,8 @@ class EchoHTTPHandler(BaseHTTPRequestHandler):
             parsed_body = case_dict[self.path.strip('/')]
             
         data = parse_qs(parsed_body)
+        if 'title' not in data or 'content' not in data:
+            return
         title = data['title'][0]
         content = data['content'][0]
         transition(title, content)
