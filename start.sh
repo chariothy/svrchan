@@ -41,7 +41,7 @@ fi
 
 if [ "$ENV" == "prod" ]; then
         docker-compose down
-        docker-compose up -d \
+        docker-compose up -d --build \
     &&  docker-compose logs -f --tail=10
 else
         docker-compose build \
