@@ -109,7 +109,7 @@ def trans_stat(content: str):
         data.update(_parse_items(REG_STAT, sys_stat))
         data.update(_parse_items(REG_WAN, wan_info))
         
-        print(online_dev_str)
+        #print(online_dev_str)
         online_devs = []
         for online_dev_item in REG_ONLINE_DEV_STAT.findall(online_dev_str):
             name, ip, total, period = online_dev_item
@@ -212,7 +212,7 @@ def transition(title, content):
     for key in REG_TITLE:
         if REG_TITLE[key].match(title):
             data = globals()[f'trans_{key}'](content)
-            print(data)
+            #print(data)
             
             if len(data['online_devs']) == 0:
                 raise ValueError('解析出错：在线设备为0')
