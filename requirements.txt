@@ -1,3 +1,5 @@
+fastapi
+uvicorn[standard]
 pybeans
 requests
 jinja2

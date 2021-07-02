@@ -57,7 +57,7 @@ REG_ABNORMAL_CLIENT = {
 
 REG_DEV_TEMP = re.compile(r'设备温度\r\n\r\n(.+)')
 
-REG_ONLINE_DEV_STAT = re.compile(r'【(.+)】\s+(.+)\r\n\r\n总计流量：([\d\.]+\s+(?:bytes|KB|MB|GB))\s+在线 (.+)')
+REG_ONLINE_DEV_STAT = re.compile(r'【(.+)】\s+(.+)\s+总计流量：([\d\.]+\s+(?:bytes|KB|MB|GB))\s+在线 (.+)')
 REG_ONLINE_DEV_CONNECT = re.compile(r'(.+)\s+([\d\.]+\s+(?:bytes|KB|MB|GB))\s+(.+)')
 
 def _shrink_time(full_time:str)->str:
@@ -92,6 +92,7 @@ def _parse_items(reg_dict:dict, content:str):
         if not result:
             raise RuntimeError(f'"{reg_dict[key].pattern}"无法匹配"{content}"')
         data[key] = result[0].strip('\r')
+    #print(data)
     return data
 
 
@@ -108,6 +109,7 @@ def trans_stat(content: str):
         data.update(_parse_items(REG_STAT, sys_stat))
         data.update(_parse_items(REG_WAN, wan_info))
         
+        print(online_dev_str)
         online_devs = []
         for online_dev_item in REG_ONLINE_DEV_STAT.findall(online_dev_str):
             name, ip, total, period = online_dev_item
@@ -180,6 +182,8 @@ def trans_abnormal(content):
 
 
 def trans_cos(content):
+    '''cos - change of state
+    '''
     sections = content.split(SECTION_SP)
     #print(sections)
     data = {
@@ -208,7 +212,10 @@ def transition(title, content):
     for key in REG_TITLE:
         if REG_TITLE[key].match(title):
             data = globals()[f'trans_{key}'](content)
-            #print(data)
+            print(data)
+            
+            if len(data['online_devs']) == 0:
+                raise ValueError('解析出错：在线设备为0')
             
             template = env.get_template(f'{key}.html')
             html = template.render(**data)

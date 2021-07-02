@@ -1,0 +1,25 @@
+version: "3"
+services:
+  svrchan:
+    build: .
+    container_name: svrchan
+    volumes:
+      - /www/svrchan:/app/svrchan
+    working_dir: /app/svrchan
+    networks: 
+      - default
+    ports: 
+      - 8822:8822
+    restart: unless-stopped
+    environment: 
+      - SVRCHAN_MAIL_FROM=${MAIL_FROM:-"Henry TIAN <chariothy@gmail.com>"}
+      - SVRCHAN_MAIL_TO=${MAIL_TO:-"Henry TIAN <chariothy@gmail.com>"}
+      - SVRCHAN_SMTP_HOST=${SMTP_HOST:-smtp.gmail.com}
+      - SVRCHAN_SMTP_PORT=${SMTP_PORT:-25}
+      - SVRCHAN_SMTP_USER=${SMTP_USER:-chariothy@gmail.com}
+      - SVRCHAN_SMTP_PWD=${SMTP_PWD}
+      - SVRCHAN_DINGTALK_TOKEN=${DINGTALK_TOKEN}
+      - SVRCHAN_DINGTALK_SECRET=${DINGTALK_SECRET}
+      - SVRCHAN_ENV=${ENV}
+    command: python server.py
+    
