@@ -35,5 +35,5 @@ async def do_POST(req: Request):
 if __name__ == "__main__":
     import uvicorn, os
     print(f'Listening ++++++ ENV={ENV} ++++++')
-    reload = os.environ.get('SVRCHAN_ENV') != 'prod'
+    reload = os.environ.get('UVICORN_ENV') != 'prod'
     uvicorn.run("server:app", host="0.0.0.0", port=8822, reload=reload)

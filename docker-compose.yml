@@ -20,6 +20,6 @@ services:
       - SVRCHAN_SMTP_PWD=${SMTP_PWD}
       - SVRCHAN_DINGTALK_TOKEN=${DINGTALK_TOKEN}
       - SVRCHAN_DINGTALK_SECRET=${DINGTALK_SECRET}
-      - SVRCHAN_ENV=${ENV}
+      - UVICORN_ENV=${UVICORN_ENV}
     command: python server.py
     
