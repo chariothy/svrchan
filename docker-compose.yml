@@ -11,6 +11,9 @@ services:
     ports: 
       - 8822:8822
     restart: always
+    logging:
+      options:
+        max-size: "10m"
     environment: 
       - SVRCHAN_MAIL_FROM=${MAIL_FROM:-"Henry TIAN <chariothy@gmail.com>"}
       - SVRCHAN_MAIL_TO=${MAIL_TO:-"Henry TIAN <chariothy@gmail.com>"}
