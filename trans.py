@@ -29,8 +29,7 @@ REG_STAT = {
 
 REG_WAN = {
     'if_ip': re.compile(r'接口ip:(.+)'),
-    'net_ip': re.compile(r'外网ip:(.+)'),
-    'online': re.compile(r'在线时间：(.+)')
+    'net_ip': re.compile(r'外网ip:(.+)')
 }
 
 REG_NEW_CLIENT = {
@@ -60,8 +59,8 @@ REG_ABNORMAL_CLIENT = {
 REG_DEV_TEMP = re.compile(r'设备温度\r\n\r\n(.+)')
 REG_IP = re.compile(r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})')
 
-REG_ONLINE_DEV_STAT = re.compile(r'【(.+)】\s+(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\s+总计流量：([\d\.]+\s+(?:bytes|KB|MB|GB))\s+在线 (.+)')
-REG_ONLINE_DEV_CONNECT = re.compile(r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\s+([\d\.]+\s+(?:bytes|KB|MB|GB))\s+(.+)')
+REG_ONLINE_DEV_STAT = re.compile(r'【(.+)】\s+(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\s+在线 (.+)')
+REG_ONLINE_DEV_CONNECT = re.compile(r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\s+(.+)')
 
 def _shrink_time(full_time:str)->str:
     """将4段时间缩短为2段时间
