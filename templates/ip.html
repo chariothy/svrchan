@@ -22,6 +22,7 @@
             <td>IP</td>
         </tr>
     </thead>
+    {% if online_devs is defined %}
     <tbody>
         {% for dev in online_devs %}
         <tr class="{% if dev.name == 'unknown' %}
@@ -34,4 +35,5 @@
         </tr>
         {% endfor %}
     </tbody>
+    {% else %}
 </table>

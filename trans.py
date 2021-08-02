@@ -130,15 +130,19 @@ def trans_connect(content):
     sections = content.split(SECTION_SP)
     #print(sections)
     data = {}
-    if len(sections) > 0:
-        _, new_dev_str, online_dev_str = sections
+    if len(sections) == 2:
+        # 精简模式
+        _, new_dev_str = sections
         new_devs = new_dev_str.split(DEVICE_SP)
         if len(new_devs) > 0:
             data['new_clients'] = []
             for new_dev_item in new_devs:
                 if new_dev_item != '\r\n\r\n':
                     data['new_clients'].append(_parse_items(REG_NEW_CLIENT, new_dev_item))
-            
+    
+    if len(sections) == 3:
+        # 完整模式
+        online_dev_str = sections[-1]
         online_devs = []
         for online_dev_item in REG_ONLINE_DEV_CONNECT.findall(online_dev_str):
             ip, name = online_dev_item
@@ -154,15 +158,18 @@ def trans_disconnect(content):
     sections = content.split(SECTION_SP)
     #print(sections)
     data = {}
-    if len(sections) > 0:
-        _, old_dev_str, online_dev_str = sections
+    if len(sections) == 2:
+        # 精简模式
+        _, old_dev_str = sections
         old_devs = old_dev_str.split(DEVICE_SP)
         if len(old_devs) > 0:
             data['old_clients'] = []
             for old_dev_item in old_devs:
                 if old_dev_item != '\r\n\r\n':
                     data['old_clients'].append(_parse_items(REG_OLD_CLIENT, old_dev_item))
-            
+    if len(sections) == 3:
+        # 完整模式
+        online_dev_str = sections[-1]
         online_devs = []
         for online_dev_item in REG_ONLINE_DEV_CONNECT.findall(online_dev_str):
             ip, name = online_dev_item
@@ -210,9 +217,13 @@ def trans_restart(content):
     sections = content.split(SECTION_SP)
     #print(sections)
     data = {}
-    if len(sections) > 0:
-        _, ip_str, online_dev_str = sections
+    if len(sections) == 2:
+        # 精简模式
+        _, ip_str = sections
         data['new_ip'] = REG_IP.findall(ip_str)[0].strip('\r')
+    if len(sections) == 3:
+        # 完整模式
+        online_dev_str = sections[-1]
         online_devs = []
         for online_dev_item in REG_ONLINE_DEV_CONNECT.findall(online_dev_str):
             ip, name = online_dev_item
@@ -228,9 +239,13 @@ def trans_ip(content):
     sections = content.split(SECTION_SP)
     #print(sections)
     data = {}
-    if len(sections) > 0:
-        _, ip_str, online_dev_str = sections
+    if len(sections) == 2:
+        # 精简模式
+        _, ip_str = sections
         data['new_ip'] = REG_IP.findall(ip_str)[0].strip('\r')
+    if len(sections) == 3:
+        # 完整模式
+        online_dev_str = sections[-1]
         online_devs = []
         for online_dev_item in REG_ONLINE_DEV_CONNECT.findall(online_dev_str):
             ip, name = online_dev_item
