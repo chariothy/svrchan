@@ -114,11 +114,10 @@ def trans_stat(content: str):
         #print(online_dev_str)
         online_devs = []
         for online_dev_item in REG_ONLINE_DEV_STAT.findall(online_dev_str):
-            name, ip, total, period = online_dev_item
+            name, ip, period = online_dev_item
             online_devs.append(dict(
                 name = name.strip('\r'),
                 ip = ip.strip('\r'),
-                total = total.strip('\r'),
                 period = period.strip('\r')
             ))
         data['online_devs'] = online_devs
@@ -142,11 +141,10 @@ def trans_connect(content):
             
         online_devs = []
         for online_dev_item in REG_ONLINE_DEV_CONNECT.findall(online_dev_str):
-            ip, total, name = online_dev_item
+            ip, name = online_dev_item
             online_devs.append(dict(
                 name = name.strip('\r'),
                 ip = ip.strip('\r'),
-                total = total.strip('\r')
             ))
         data['online_devs'] = online_devs
     return data
@@ -167,11 +165,10 @@ def trans_disconnect(content):
             
         online_devs = []
         for online_dev_item in REG_ONLINE_DEV_CONNECT.findall(online_dev_str):
-            ip, total, name = online_dev_item
+            ip, name = online_dev_item
             online_devs.append(dict(
                 name = name.strip('\r'),
                 ip = ip.strip('\r'),
-                total = total.strip('\r')
             ))
         data['online_devs'] = online_devs
     return data
@@ -200,11 +197,10 @@ def trans_cos(content):
         elif '现有在线设备' in item:
             online_devs = []
             for online_dev_item in REG_ONLINE_DEV_CONNECT.findall(item):
-                ip, total, name = online_dev_item
+                ip, name = online_dev_item
                 online_devs.append(dict(
                     name = name.strip('\r'),
                     ip = ip.strip('\r'),
-                    total = total.strip('\r')
                 ))
             data['online_devs'] = online_devs
     return data
@@ -219,11 +215,10 @@ def trans_restart(content):
         data['new_ip'] = REG_IP.findall(ip_str)[0].strip('\r')
         online_devs = []
         for online_dev_item in REG_ONLINE_DEV_CONNECT.findall(online_dev_str):
-            ip, total, name = online_dev_item
+            ip, name = online_dev_item
             online_devs.append(dict(
                 name = name.strip('\r'),
                 ip = ip.strip('\r'),
-                total = total.strip('\r')
             ))
         data['online_devs'] = online_devs
     return data
@@ -238,11 +233,10 @@ def trans_ip(content):
         data['new_ip'] = REG_IP.findall(ip_str)[0].strip('\r')
         online_devs = []
         for online_dev_item in REG_ONLINE_DEV_CONNECT.findall(online_dev_str):
-            ip, total, name = online_dev_item
+            ip, name = online_dev_item
             online_devs.append(dict(
                 name = name.strip('\r'),
                 ip = ip.strip('\r'),
-                total = total.strip('\r')
             ))
         data['online_devs'] = online_devs
     return data
