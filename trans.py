@@ -15,7 +15,7 @@ REG_TITLE = {
     'connect': re.compile(r'【.+】.+\s+连接了你的路由器'),
     'disconnect': re.compile(r'【.+】.+\s+断开连接'),
     'abnormal': re.compile(r'【.+】.+\s+流量异常'),
-    'cos': re.compile(r'【.+】设备状态变化')    # Change-of-State
+    'cos': re.compile(r'【.+】设备状态变化'),    # Change-of-State
     'restart': re.compile(r'【.+】路由器重新启动'),
     'ip': re.compile(r'【.+】IP 地址变化'),
 }
