@@ -262,10 +262,6 @@ def transition(title, content):
         if REG_TITLE[key].match(title):
             data = globals()[f'trans_{key}'](content)
             #print(data)
-            
-            if len(data['online_devs']) == 0:
-                raise ValueError('解析出错：在线设备为0')
-            
             template = env.get_template(f'{key}.html')
             html = template.render(**data)
             html = transform(html)
