@@ -43,7 +43,6 @@ REG_OLD_CLIENT = {
     'name': re.compile(r'客户端名：\s+(.+)'),
     'ip': re.compile(r'客户端IP：\s+(.+)'),
     'mac': re.compile(r'客户端MAC：\s+(.+)'),
-    'total': re.compile(r'总计流量：\s+(.+)'),
     'period': re.compile(r'在线时间：\s+(.+)')
 }
 
