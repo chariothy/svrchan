@@ -16,6 +16,7 @@ REG_TITLE = {
     'disconnect': re.compile(r'【.+】.+\s+断开连接'),
     'abnormal': re.compile(r'【.+】.+\s+流量异常'),
     'cos': re.compile(r'【.+】设备状态变化')    # Change-of-State
+    'restart': re.compile(r'【.+】路由器重新启动'),
 }
 
 REG_STAT = {
@@ -56,9 +57,10 @@ REG_ABNORMAL_CLIENT = {
 }
 
 REG_DEV_TEMP = re.compile(r'设备温度\r\n\r\n(.+)')
+REG_RESTART_IP = re.compile(r'路由器重新启动\r\n\r\n(.+)')
 
-REG_ONLINE_DEV_STAT = re.compile(r'【(.+)】\s+(.+)\s+总计流量：([\d\.]+\s+(?:bytes|KB|MB|GB))\s+在线 (.+)')
-REG_ONLINE_DEV_CONNECT = re.compile(r'(.+)\s+([\d\.]+\s+(?:bytes|KB|MB|GB))\s+(.+)')
+REG_ONLINE_DEV_STAT = re.compile(r'【(.+)】\s+(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\s+总计流量：([\d\.]+\s+(?:bytes|KB|MB|GB))\s+在线 (.+)')
+REG_ONLINE_DEV_CONNECT = re.compile(r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\s+([\d\.]+\s+(?:bytes|KB|MB|GB))\s+(.+)')
 
 def _shrink_time(full_time:str)->str:
     """将4段时间缩短为2段时间
@@ -208,7 +210,26 @@ def trans_cos(content):
     return data
 
 
-def transition(title, content): 
+def trans_restart(content):
+    sections = content.split(SECTION_SP)
+    #print(sections)
+    data = {}
+    if len(sections) > 0:
+        _, ip_str, online_dev_str = sections
+        data['restart_ip'] = REG_RESTART_IP.findall(ip_str)[0].strip('\r')
+        online_devs = []
+        for online_dev_item in REG_ONLINE_DEV_CONNECT.findall(online_dev_str):
+            ip, total, name = online_dev_item
+            online_devs.append(dict(
+                name = name.strip('\r'),
+                ip = ip.strip('\r'),
+                total = total.strip('\r')
+            ))
+        data['online_devs'] = online_devs
+    return data
+
+
+def transition(title, content):
     for key in REG_TITLE:
         if REG_TITLE[key].match(title):
             data = globals()[f'trans_{key}'](content)
