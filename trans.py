@@ -121,7 +121,6 @@ def trans_stat(content: str):
             ))
         data['online_devs'] = online_devs
         data['period'] = _shrink_time(data['period'])
-        data['online'] = _shrink_time(data['online'])
     return data
         
 
