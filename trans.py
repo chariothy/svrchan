@@ -18,6 +18,7 @@ REG_TITLE = {
     'cos': re.compile(r'【.+】设备状态变化'),    # Change-of-State
     'restart': re.compile(r'【.+】路由器重新启动'),
     'ip': re.compile(r'【.+】IP 地址变化'),
+    'high': re.compile(r'【.+】CPU 负载过高！'),
 }
 
 REG_STAT = {
@@ -252,6 +253,16 @@ def trans_ip(content):
                 ip = ip.strip('\r'),
             ))
         data['online_devs'] = online_devs
+    return data
+
+
+def trans_high(content):
+    sections = content.split(SECTION_SP)
+    #print(sections)
+    data = {
+        'desc': sections[0],
+        'detail': sections[1]
+    }
     return data
 
 
