@@ -9,7 +9,7 @@ services:
     networks: 
       - default
     ports: 
-      - 8822:8822
+      - 8822:8000
     restart: always
     logging:
       options:

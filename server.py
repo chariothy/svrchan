@@ -9,7 +9,7 @@ from utils import su
 from case import case_dict
 
 app = FastAPI()
-ENV = os.environ.get('ENV', 'prod')
+ENV = os.environ.get('ENV', 'dev')
 
 
 def trans(title: str, content: str):
@@ -35,5 +35,4 @@ async def do_POST(req: Request):
 if __name__ == "__main__":
     import uvicorn, os
     print(f'Listening ++++++ ENV={ENV} ++++++')
-    reload = os.environ.get('ENV') != 'prod'
-    uvicorn.run("server:app", host="0.0.0.0", port=8822, reload=reload)
+    uvicorn.run("server:app", host="0.0.0.0", port=su['port'], reload=(ENV != 'prod'))
